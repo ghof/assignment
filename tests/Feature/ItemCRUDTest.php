@@ -56,7 +56,7 @@ class ItemCRUDTest extends TestCase
         $this->assertSame($attributes['name'], $responseItem['name']);
         $this->assertSame('12 300.45', $responseItem['price']);
         $this->assertSame($attributes['url'], $responseItem['url']);
-      //  $this->assertSame($attributes['description'], $responseItem['description']);
+        $this->assertSame("<p>Test description</p>", $responseItem['description']);
     }
 
     public function test_creating_new_item_with_valid_data(): void
