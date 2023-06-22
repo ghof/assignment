@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreItemRequest;
 use App\Models\Item;
 use App\Serializers\ItemSerializer;
 use App\Serializers\ItemsSerializer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use League\CommonMark\CommonMarkConverter;
 
 class ItemController extends Controller
@@ -17,14 +17,8 @@ class ItemController extends Controller
         return JsonResponse::create(['items' => (new ItemsSerializer($items))->getData()]);
     }
 
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        $this->validate($request, [
-          'name' => 'required|string|max:255',
-          'price' => 'required|numeric',
-           'url' => 'required|url',
-          'description' => 'required|string',
-        ]);
 
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
 
@@ -50,16 +44,8 @@ class ItemController extends Controller
         return new JsonResponse(['item' => $serializer->getData()]);
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(StoreItemRequest $request, int $id): JsonResponse
     {
-
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'url' => 'required|url',
-            'description' => 'required|string',
-        ]);
-
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
 
         $item = Item::findOrFail($id);
