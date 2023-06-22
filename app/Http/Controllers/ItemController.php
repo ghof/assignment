@@ -20,13 +20,11 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request)
     {
 
-        $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
-
         $item = Item::create([
             'name' => $request->get('name'),
             'price' => $request->get('price'),
             'url' => $request->get('url'),
-            'description' => $converter->convert($request->get('description'))->getContent(),
+            'description' => $request->get('description'),
         ]);
 
 
@@ -46,13 +44,12 @@ class ItemController extends Controller
 
     public function update(StoreItemRequest $request, int $id): JsonResponse
     {
-        $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
 
         $item = Item::findOrFail($id);
         $item->name = $request->get('name');
         $item->url = $request->get('url');
         $item->price = $request->get('price');
-        $item->description = $converter->convert($request->get('description'))->getContent();
+        $item->description = $request->get('description');
         $item->save();
 
         return new JsonResponse(
