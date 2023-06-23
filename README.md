@@ -24,16 +24,56 @@ Please also include a way for the command to display a single information from t
 for example just the average price. You can add a command parameter/option to specify which
 statistic should be displayed.
 
-## Open questions
-Please write your answers to following questions.
+## Open questions.
 
-> **Please briefly explain your implementation of the new feature**  
->  
-> _..._
+> **All the statistics are available in the /statistics endpoint**
+
+for example you can visit http://127.0.0.1:8000/statistics to check it
+
+the response will be something like
+```json lines
+{
+    "statistics": {
+        "website with the highest total price of its items": "store.example.com",
+        "total items count": 36,
+        "average price of an item": 6167.5375,
+        "total price of items added this month": 222031.35
+    }
+}
+```
+> **they can be also displayed using below command**
+
+`php artisan statistics:display [...]`.
+
+the command accepts 4 arguments
+- total: to get total items count
+- avg: to get average price of an item
+- website: to get the website with the highest total price of its items
+- price: to get total price of items added this month
+
+The output of `php artisan statistics:display website avg count price` will look like
+
+```
++---------------------------------------------------+-------------------+
+| information                                       | value             |
++---------------------------------------------------+-------------------+
+| website with the highest total price of its items | store.example.com |
+| average price of an item                          | 6167.5375         |
+| total items count                                 | 36                |
+| total price of items added this month             | 222031.35         |
++---------------------------------------------------+-------------------+
+```
+
+
 
 > **For the refactoring, would you change something else if you had more time?**  
->  
-> _..._
+
+If I got more time I will 
+- Write Unit Tests for the statistics feature.
+- Create translation files to replace $labels in StatisticsService
+- Create new migration to add new indexed column in items table to store the domain from the given url
+as this will optimise the query of getting website with the highest total price of its items
+- Upgrade to most recent Laravel version
 
 ## Running the project
 This project requires a database to run. For the server part, you can use `php artisan serve`
